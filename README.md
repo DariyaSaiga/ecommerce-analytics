@@ -11,6 +11,7 @@ We explore customer behavior, order details, payments, reviews, sellers, and pro
 ## Preview (Analytics Screenshot)
 All screenshots of terminal commands, query execution, and CSV results are saved in the `screenshots` folder.
 The results of SQL queries are saved in the `results` folder.
+The ER diagram
 ![The ER diagram (ERD)](ERdiagram.png)
 
 ## How to Run the Project
