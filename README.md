@@ -11,7 +11,7 @@ We explore customer behavior, order details, payments, reviews, sellers, and pro
 ## Preview (Analytics Screenshot)
 All screenshots of terminal commands, query execution, and CSV results are saved in the `screenshots` folder.
 The results of SQL queries are saved in the `results` folder.
-The ER diagram (ERD) can be viewed in the ERD folder or directly via the ERdiagram.png file.
+![The ER diagram (ERD)](ERdiagram.png)
 
 ## How to Run the Project
 1. Make sure Python 3 is installed on your system.
