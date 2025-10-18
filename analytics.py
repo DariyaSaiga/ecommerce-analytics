@@ -100,6 +100,7 @@ def scatter_top_products():
     fig.show()
     return df
 
+<<<<<<< HEAD
 # --- Функция экспорта в Excel с форматированием ---
 
 def export_to_excel(dataframes_dict, filename):
@@ -131,6 +132,8 @@ def export_to_excel(dataframes_dict, filename):
 
     wb.save(filepath)
     print(f"Создан файл {filename}, {len(wb.sheetnames)} листа(ов), {total_rows} строк")
+=======
+>>>>>>> 933bca9 (Добавлен экспорт дашборда Superset)
 
 # --- Основной блок ---
 

@@ -50,4 +50,8 @@ Static graphs are stored in charts/ folder, Excel reports in exports/ folder.
 ## Notes
 All numeric columns in Excel reports have conditional formatting (color gradients for min/max).
 Filters and frozen headers are applied in Excel for easier analysis.
+<<<<<<< HEAD
 Interactive Plotly graphs allow visual exploration with sliders and hover tooltips.
+=======
+Interactive Plotly graphs allow visual exploration with sliders and hover tooltips.
+>>>>>>> 933bca9 (Добавлен экспорт дашборда Superset)
