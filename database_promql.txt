@@ -1,0 +1,48 @@
+# PromQL Queries for Postgres Dashboard
+1. pg_up{instance="my_postgresql_db"}
+2. pg_stat_database_numbackends{datname="ecommerce"}
+3. pg_database_size_bytes{datname="ecommerce"} / 1024 / 1024 / 1024
+4. (time() - process_start_time_seconds) / 3600
+5. rate(pg_stat_database_xact_commit{datname="ecommerce"}[5m])
+6. count(pg_stat_user_tables_n_live_tup{datname="ecommerce"})
+7. sum(pg_stat_user_tables_n_live_tup{datname="ecommerce"})
+8. (sum(pg_stat_database_numbackends{datname="ecommerce"}) / 100) * 100
+9. rate(pg_stat_database_xact_rollback{datname="ecommerce"}[5m])
+10. topk(5, pg_stat_user_tables_n_live_tup{datname="ecommerce"})
+
+# PromQL Queries for Node Exporter Dashboard
+1. 100 - (rate(node_cpu_seconds_total{mode="idle"}[5m]) * 100)
+2. node_load1
+  node_load5
+  node_load15 
+3.100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))
+4. # Query A - Общая память
+  node_memory_MemTotal_bytes / 1024 / 1024 / 1024
+  # Query B - Доступная память
+  node_memory_MemAvailable_bytes / 1024 / 1024 / 1024
+  # Query C - Используемая память
+  (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024 / 1024 / 1024
+5. (time() - node_boot_time_seconds) / 3600
+6. # Query A - Чтение (байт/сек)
+  rate(node_disk_read_bytes_total[5m])
+  # Query B - Запись (байт/сек)
+  rate(node_disk_written_bytes_total[5m])
+7. # Query A - Входящий трафик (Мбит/сек)
+  rate(node_network_receive_bytes_total{device!="lo"}[5m]) * 8 / 1000000
+  # Query B - Исходящий трафик (Мбит/сек)
+  rate(node_network_transmit_bytes_total{device!="lo"}[5m]) * 8 / 1000000
+8. rate(node_context_switches_total[5m])
+9. node_procs_running
+10. 100 * (node_filefd_allocated / node_filefd_maximum)
+
+# PromQL Queries for Custom Exporter Dashboard
+1. weather_temperature_celsius{city="Astana"}
+2. avg_over_time(weather_temperature_celsius{city="Astana"}[30m])
+3. max_over_time(weather_pressure_hpa{city="Astana"}[1h])
+4. avg_over_time(weather_cloud_cover_percent{city="Astana"}[6h])
+5. avg_over_time(weather_api_response_time_seconds{city="Astana",country="Kazakhstan"}[5m])
+6. sum(weather_temperature_celsius) by (country)
+7. count_over_time(weather_api_status{city="Astana"}[1h])
+8. avg(weather_windspeed_kmh) by (city)
+9. avg_over_time(weather_precipitation_mm[6h]) / avg_over_time(weather_temperature_celsius[6h])
+10. topk(3, avg_over_time(weather_temperature_celsius[1h]))

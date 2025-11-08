@@ -1,12 +1,8 @@
 import psycopg2
-<<<<<<< HEAD
-import pandas as pd
-=======
 import time
 import random
 from datetime import datetime, timedelta
 import uuid
->>>>>>> 933bca9 (Добавлен экспорт дашборда Superset)
 
 # Connection data
 DB_HOST = "localhost"
@@ -15,17 +11,11 @@ DB_USER = "postgres"
 DB_PASS = "Abla_sf65"
 DB_PORT = 5432
 
-<<<<<<< HEAD
-# Path to the SQL file
-SQL_FILE = "/Users/dariyaablanova/Desktop/unic_work/DataVis/Assignment/queries.sql"
+# Интервал обновления (в секундах)
+INTERVAL = 5 
 
-# Creates and returns a connection to PostgreSQL.
-=======
-# Update interval
-INTERVAL = 5  
-
->>>>>>> 933bca9 (Добавлен экспорт дашборда Superset)
 def get_connection():
+    """Создает и возвращает подключение к PostgreSQL"""
     try:
         conn = psycopg2.connect(
             host=DB_HOST,
@@ -36,55 +26,9 @@ def get_connection():
         )
         return conn
     except Exception as e:
-<<<<<<< HEAD
-        print("Error connecting to the database:", e)
-        return None
-
-# Run SQL query and return DataFrame
-def run_query(query):
-    conn = get_connection()
-    if not conn:
-        return None
-    try:
-        df = pd.read_sql(query, conn)
-        return df
-    finally:
-        conn.close()
-
-# Loads SQL queries into a dict {name: query}
-def load_queries():
-    queries = {}
-    try:
-        with open(SQL_FILE, "r", encoding="utf-8") as f:
-            content = f.read()
-
-        # Разбиваем по тегу -- name:
-        parts = content.split("-- name:")
-        for part in parts[1:]:
-            lines = part.strip().splitlines()
-            name = lines[0].strip()  # имя после -- name:
-            sql = "\n".join(lines[1:]).strip()  
-            queries[name] = sql
-        return queries
-    except Exception as e:
-        print("Error loading SQL file:", e)
-        return {}
-    
-
-# Example of connection test and query loading
-if __name__ == "__main__":
-    conn = get_connection()
-    if conn:
-        print("✅ Connection to the database established.")
-        queries = load_queries()
-        if queries:
-            print(f"✅ Loaded {len(queries)} SQL queries: {list(queries.keys())[:3]}...")
-        conn.close()
-=======
         print(f"❌ Ошибка подключения к БД: {e}")
         return None
 
-# Gets existing IDs from tables for correct insertion
 def get_random_ids(conn):
     cursor = conn.cursor()
     ids = {}
@@ -112,9 +56,11 @@ def get_random_ids(conn):
     return ids
 
 def generate_order_id():
-    return str(uuid.uuid4())[:32] 
+    """Генерирует уникальный order_id"""
+    return str(uuid.uuid4())[:32]  # character varying, обрезаем до разумной длины
 
 def insert_order_with_items(conn, ids):
+    """Вставляет новый заказ и его позиции"""
     cursor = conn.cursor()
     
     try:
@@ -154,15 +100,23 @@ def insert_order_with_items(conn, ids):
             product_id = random.choice(ids['products'])
             seller_id = random.choice(ids['sellers'])
             
-            # Получаем данные о товаре для реалистичных цен
+            # Генерируем реалистичную цену в зависимости от категории
+            # Получаем категорию товара для более реалистичных цен
             cursor.execute("""
-                SELECT product_category_name, product_weight_g 
+                SELECT product_category_name 
                 FROM products WHERE product_id = %s;
             """, (product_id,))
-            product_data = cursor.fetchone()
+            result = cursor.fetchone()
+            category = result[0] if result else None
             
-            # Генерируем цену и доставку
-            price = round(random.uniform(10.0, 500.0), 2)
+            # Разные диапазоны цен для разных категорий
+            if category and 'eletronicos' in str(category).lower():
+                price = round(random.uniform(100.0, 2000.0), 2)  # Электроника дороже
+            elif category and 'moveis' in str(category).lower():
+                price = round(random.uniform(200.0, 1500.0), 2)  # Мебель
+            else:
+                price = round(random.uniform(10.0, 500.0), 2)  # Остальное
+            
             freight_value = round(random.uniform(5.0, 50.0), 2)
             shipping_limit = purchase_time + timedelta(days=random.randint(1, 5))
             
@@ -178,6 +132,7 @@ def insert_order_with_items(conn, ids):
                 shipping_limit, price, freight_value
             ))
             
+            # Добавляем к общей сумме заказа
             total_order_value += price + freight_value
         
         # Добавляем платеж
@@ -230,6 +185,7 @@ def insert_review(conn, ids):
         review_id = str(uuid.uuid4())[:32]
         review_score = random.randint(1, 5)
         
+        # Генерируем комментарий в зависимости от оценки
         positive_comments = [
             "Excellent product! Fast delivery",
             "Very satisfied with the purchase",
@@ -276,8 +232,10 @@ def insert_review(conn, ids):
         cursor.close()
 
 def main():
+    """Основная функция"""
     print("🚀 Запуск скрипта автоматического добавления данных в БД 'ecommerce'...")
     print(f"⏱️  Интервал обновления: {INTERVAL} секунд")
+    print("⏹️  Для остановки нажмите Ctrl+C\n")
     
     conn = get_connection()
     if not conn:
@@ -320,4 +278,3 @@ def main():
 
 if __name__ == "__main__":
     main()
->>>>>>> 933bca9 (Добавлен экспорт дашборда Superset)

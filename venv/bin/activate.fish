@@ -30,7 +30,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/dariyaablanova/Desktop/unic_work/DataVis/Assignment/venv"
+set -gx VIRTUAL_ENV "/Users/dariyaablanova/Desktop/unic_work/DataVis/ecommerce-analytics/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
