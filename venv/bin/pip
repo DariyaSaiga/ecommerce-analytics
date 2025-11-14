@@ -1,4 +1,4 @@
-#!/Users/dariyaablanova/Desktop/unic_work/DataVis/ecommerce-analytics/venv/bin/python3
+#!/Users/dariyaablanova/Desktop/unic_work/DataVis/ecommerce-analytics/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
