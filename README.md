@@ -20,34 +20,34 @@ This repository contains a comprehensive data analytics and monitoring solution 
 ## 📁 Project Structure
 
 ```
-ecomvision-analytics/
-├── assignment1-2/              # SQL Analysis & Visualization
-│   ├── charts/                 # Static charts (PNG)
-│   ├── exports/                # Excel reports
-│   ├── results/                # SQL query results (CSV)
-│   ├── screenshots/            # Terminal & query screenshots
-│   ├── analytics.py            # Interactive Plotly graphs
-│   ├── charts_static.py        # Static matplotlib charts
-│   └── __ERdiagram.png__       # Database ER diagram
-│
-├── assignment3/                # Apache Superset Dashboards
-│   ├── dashboards/             # Exported dashboard JSONs
-│   └── screenshots/            # Dashboard screenshots
-│
-├── assignment4/                # Prometheus + Grafana Monitoring
-│   ├── dashboards/             
-│   │   ├── dashboard_1_postgres.json    # PostgreSQL monitoring
-│   │   ├── dashboard_2_node.json        # System monitoring
-│   │   └── dashboard_3_custom.json      # Weather API monitoring
-│   ├── config/
-│   │   └── prometheus.yml      # Prometheus configuration
-│   ├── scripts/
-│   │   ├── load_test.py        # System load testing
-│   │   └── custom_exporter.py  # Weather API exporter
-│   ├── docker-compose.yml      # Infrastructure setup
-│   └── screenshots/            # Monitoring screenshots
-│
-└── README.md                   # This file
+ecommerce-analytics/
+├── __pycache__/
+├── 3d_visual/                      
+├── charts/
+├── config/
+├── dashboards/
+├── dataset/
+├── exports/
+├── results/
+├── screenshots/
+├── venv/                            
+├── 3d_model.py                  
+├── 3d_model_saved.py                
+├── analytics.py
+├── Assignment.code-workspace
+├── chart_create.py
+├── config.py
+├── custom_exporter.py
+├── database_promql.txt
+├── dataset.zip
+├── docker-compose.yml
+├── Dragon 2.5_ply.ply               
+├── ERdiagram.png
+├── main.py
+├── queries.sql
+├── README.md
+├── requirements.txt
+└── superset_config.py
 ```
 
 ---
@@ -622,6 +622,68 @@ All project deliverables include screenshots demonstrating:
 - [x] Dashboard variable configured (city filter)
 - [x] Alert added (API performance)
 - [x] JSON and code exported to GitHub
+
+---
+
+---
+
+## 🆕 Assignment 5 — 3D Visualization & Geometry Processing (Open3D)
+
+This assignment adds a full 3D processing pipeline based on **Open3D**, using a real triangulated mesh model (`Dragon 2.5_ply.ply`).  
+The final script performs all visualization steps interactively and **automatically saves PNG images** for each stage into the `3d_visual/` directory.
+
+### ✅ What was implemented
+
+A complete 7-step 3D geometry workflow:
+
+1. **Mesh Loading & Visualization**  
+   - Loads the `.ply` model  
+   - Prints mesh info (vertices, triangles, normals)  
+   - Displays the original mesh and saves a screenshot  
+
+2. **Mesh → Point Cloud Conversion**  
+   - Uniform sampling of ~15,000 points  
+   - Point normal estimation  
+   - Visualization + PNG output  
+
+3. **Poisson Surface Reconstruction**  
+   - Generates a watertight reconstructed mesh  
+   - Removes low-density artifacts  
+   - Crops to bounding box  
+   - Saves visualization  
+
+4. **Voxelization**  
+   - Adaptive voxel size selection (auto-tuned from bounding box)  
+   - Converts voxel grid into small cube meshes for clear rendering  
+   - Saves voxel visualization  
+
+5. **Adding a Slicing Plane**  
+   - Thin red plane positioned near model center  
+   - Used for clipping in next step  
+   - Saves visualization  
+
+6. **Clipping by Plane**  
+   - Removes all points on one side of the plane  
+   - Produces a clipped point cloud  
+   - Saves visualization  
+
+7. **Color Gradient & Geometric Extremes**  
+   - Applies a height-based (Z-axis) color gradient  
+   - Finds lowest & highest points  
+   - Marks them with blue/red spheres  
+   - Saves final visualization  
+
+### 📁 Files Added
+
+- `3d_model_saved.py` — final script with automatic screenshot saving  
+- `Dragon 2.5_ply.ply` — 3D model used in the assignment  
+- `3d_visual/step1_*.png ... step7_*.png` — output images for all steps  
+
+### ▶️ How to Run
+
+```bash
+pip install open3d numpy
+python3 3d_model_saved.py
 
 ---
 
